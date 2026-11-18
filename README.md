@@ -6,7 +6,7 @@ Sitio estático (HTML + CSS + JS), sin dependencias ni build.
 
 **Opción A · GitHub (recomendada)**
 1. En github.com, creá un repositorio nuevo (por ejemplo `botania-web`).
-2. "Add file → Upload files" y arrastrá todo el contenido de esta carpeta (index.html, styles.css, script.js, favicon.svg, vercel.json y la carpeta img).
+2. "Add file → Upload files" y arrastrá todo el contenido de esta carpeta (index.html, styles.css, script.js, favicon.svg, vercel.json y las imágenes .webp y .jpg). Todos los archivos van sueltos, sin carpetas..
 3. En vercel.com → Add New → Project → importá el repositorio.
 4. Framework Preset: **Other**. Build Command y Output Directory: vacíos. Deploy.
 Cada cambio que subas al repo se publica solo.
