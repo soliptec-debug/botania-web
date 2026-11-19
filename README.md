@@ -25,3 +25,7 @@ npx vercel --prod # producción
 ## QR y links de la app
 - El QR se genera solo y apunta a `tu-dominio/app`. Esa página detecta el teléfono y manda a la App Store (iPhone) o a Google Play (Android).
 - Los links de las tiendas están en `config.js`. Hoy llevan a una búsqueda de "BotanIA"; cuando la app esté publicada, pegá ahí los links reales y listo: se actualizan el QR, los botones y la página /app.
+
+## Modelos 3D
+- `pots3d.js` arma los 6 modelos de las líneas Autóctona e Interior con three.js (`three.min.js`), sin archivos externos.
+- Se cargan solo cuando el visitante llega a la sección "Nuestras líneas". Si el navegador no soporta 3D, se ven las fotos.
