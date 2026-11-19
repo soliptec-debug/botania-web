@@ -381,7 +381,7 @@
     P.ellipse(-2.32, 0.56, 0.26, 0.18, '#E2C39A');
     P.ellipse(0.05, 0.2, 0.42, 0.22, '#DDB98E');       // barriga de la casita
     P.ellipse(-0.45, 0.38, 0.17, 0.13, '#E8CFA8');     // pecho
-    var su = P.P(1.95, 0.24); drawSun(x, su[0], su[1], 12);
+    var su = P.P(Math.PI / 2, 0.26); drawSun(x, su[0], su[1], 12);
     g.add(potLathe(prof, { map: tex(P.canvas), rough: 0.3, color: 0xA9693B, wall: 0.03 }));
     // ojo grande con aro oscuro y pico largo, sobre el mismo cuerpo
     var ep = lathePoint(prof, -0.8, 0.58), eye = new T.Group();
@@ -410,13 +410,16 @@
     var wingC = canvas2d(256, 256), wx = wingC.getContext('2d'); wx.fillStyle = '#8B5129'; wx.fillRect(0, 0, 256, 256);
     wx.fillStyle = '#7FB1E3'; wx.fillRect(0, 62, 256, 20); wx.fillStyle = '#F5F3EE'; wx.fillRect(0, 88, 256, 14);
     wx.strokeStyle = 'rgba(60,30,12,0.5)'; wx.lineWidth = 4; for (var f = 0; f < 5; f++) { wx.beginPath(); wx.moveTo(30 + f * 45, 150); wx.lineTo(50 + f * 45, 250); wx.stroke(); }
-    var wpp = lathePoint(prof, 0.85, 0.42), wing = mesh(new T.SphereGeometry(0.22, 32, 20), M(0xffffff, 0.35, { map: tex(wingC) }));
-    wing.scale.set(1.3, 0.62, 0.28); place(wing, wpp.pos, wpp.n, -0.02); wing.rotateZ(-0.45); g.add(wing);
+    var wingMat = M(0xffffff, 0.35, { map: tex(wingC) }), wingGeo = new T.SphereGeometry(0.22, 32, 20);
+    [[0.85, -0.45], [Math.PI - 0.85, 0.45]].forEach(function (wd) { // un ala en cada costado
+      var wpp = lathePoint(prof, wd[0], 0.42), wing = mesh(wingGeo, wingMat);
+      wing.scale.set(1.3, 0.62, 0.28); place(wing, wpp.pos, wpp.n, -0.02); wing.rotateZ(wd[1]); g.add(wing);
+    });
     // cola
     var tsh = new T.Shape(); tsh.moveTo(0, -0.06); tsh.quadraticCurveTo(0.2, -0.08, 0.3, -0.02); tsh.quadraticCurveTo(0.2, 0.06, 0, 0.06); tsh.lineTo(0, -0.06);
     var tail = mesh(new T.ExtrudeGeometry(tsh, { depth: 0.06, bevelEnabled: true, bevelThickness: 0.02, bevelSize: 0.02, bevelSegments: 3 }), M(0x8B5129, 0.35));
-    var tp = lathePoint(prof, 1.95, 0.14); tail.position.copy(tp.pos).add(tp.n.clone().multiplyScalar(-0.05)).add(V(0, 0, 0));
-    tail.rotation.y = 1.95 - Math.PI / 2; tail.rotateZ(-0.35); g.add(tail);
+    var tp = lathePoint(prof, Math.PI / 2, 0.14); tail.position.copy(tp.pos).add(tp.n.clone().multiplyScalar(-0.05)).add(V(0, 0, 0));
+    tail.position.z -= 0.03; tail.rotateZ(-0.35); g.add(tail);
     g.add(soil(0.3, 0.3, 0.785));
     var plant = bushy({ kind: 'heart', count: 22, spread: 0.42, height: 0.42, dome: 0.5, leaf: 0.15, seed: 31, colors: [0x4FAE45, 0x5CBB50, 0x3E9A3A, 0x67C35A] });
     plant.position.y = 0.785; g.add(plant);
