@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Descargá BotanIA</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<script src="config.js"></script>
+<script>
+  (function(){
+    var ua = navigator.userAgent || '', c = window.BOTANIA_APP || {};
+    var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (isIOS && c.ios) location.replace(c.ios);
+    else if (/Android/i.test(ua) && c.android) location.replace(c.android);
+  })();
+</script>
+<style>
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#F4F8F3;font-family:system-ui,sans-serif;color:#10241A;padding:24px;box-sizing:border-box}
+main{background:#fff;border-radius:24px;padding:40px 32px;max-width:420px;text-align:center;display:flex;flex-direction:column;gap:16px}
+h1{margin:0;font-size:28px}p{margin:0;color:#4D6157;line-height:1.5}
+a.btn{display:block;background:#146B3A;color:#fff;text-decoration:none;font-weight:700;padding:14px;border-radius:999px}
+a.alt{color:#146B3A}
+</style>
+</head>
+<body>
+<main>
+<h1>Descargá la app BotanIA</h1>
+<p>Elegí la tienda de tu teléfono:</p>
+<a class="btn" id="i" href="#">App Store (iPhone)</a>
+<a class="btn" id="a" href="#">Google Play (Android)</a>
+<a class="alt" href="/">Volver a la web</a>
+</main>
+<script>var c=window.BOTANIA_APP||{};document.getElementById('i').href=c.ios;document.getElementById('a').href=c.android;</script>
+</body>
+</html>

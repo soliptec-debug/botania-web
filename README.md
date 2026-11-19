@@ -21,3 +21,7 @@ npx vercel --prod # producción
 - Links reales de Mercado Libre, locales y redes (hoy apuntan a secciones de la página).
 - El botón "Comprar ahora" debería llevar a la tienda (Tiendanube) cuando exista.
 - El formulario de mail es visual: para guardar los mails, conectarlo con un servicio (Mailchimp, Google Forms, etc.).
+
+## QR y links de la app
+- El QR se genera solo y apunta a `tu-dominio/app`. Esa página detecta el teléfono y manda a la App Store (iPhone) o a Google Play (Android).
+- Los links de las tiendas están en `config.js`. Hoy llevan a una búsqueda de "BotanIA"; cuando la app esté publicada, pegá ahí los links reales y listo: se actualizan el QR, los botones y la página /app.
