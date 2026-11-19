@@ -377,22 +377,24 @@
     var prof = smooth([[0.34, 0], [0.42, 0.04], [0.48, 0.18], [0.5, 0.38], [0.47, 0.56], [0.4, 0.7], [0.32, 0.8]], 60);
     var P = lathePainter(prof, 2048, 768, '#A9693B'), x = P.ctx;
     P.band(0, 0.05, '#C99A68');
+    P.ellipse(-0.82, 0.56, 0.26, 0.18, '#E2C39A');     // cara
+    P.ellipse(-2.32, 0.56, 0.26, 0.18, '#E2C39A');
     P.ellipse(0.05, 0.2, 0.42, 0.22, '#DDB98E');       // barriga de la casita
-    P.ellipse(-0.78, 0.56, 0.24, 0.17, '#E2C39A');     // cara
     P.ellipse(-0.45, 0.38, 0.17, 0.13, '#E8CFA8');     // pecho
     var su = P.P(1.95, 0.24); drawSun(x, su[0], su[1], 12);
     g.add(potLathe(prof, { map: tex(P.canvas), rough: 0.3, color: 0xA9693B, wall: 0.03 }));
-    // ojo grande con aro oscuro
-    var ep = lathePoint(prof, -0.78, 0.58), eye = new T.Group();
-    var wht = mesh(new T.SphereGeometry(0.08, 28, 18), M(0xFFFFFF, 0.2)); wht.scale.z = 0.4; eye.add(wht);
-    eye.add(mesh(new T.TorusGeometry(0.08, 0.013, 10, 40), M(0x3A2416, 0.4)));
-    var pu = glossyEye(0.045); pu.position.z = 0.016; eye.add(pu);
-    g.add(place(eye, ep.pos, ep.n, 0.01));
-    // pico
-    var bp = lathePoint(prof, -1.3, 0.6), beak = mesh(new T.ConeGeometry(0.045, 0.32, 18), M(0x6E4426, 0.4));
-    beak.position.copy(bp.pos).add(bp.n.clone().multiplyScalar(0.1)); beak.lookAt(bp.pos.clone().add(bp.n.clone().multiplyScalar(2))); beak.rotateX(Math.PI / 2); g.add(beak);
+    // ojo grande con aro oscuro y pico largo, sobre el mismo cuerpo
+    var ep = lathePoint(prof, -0.8, 0.58), eye = new T.Group();
+    var wht = mesh(new T.SphereGeometry(0.085, 28, 18), M(0xFFFFFF, 0.2)); wht.scale.z = 0.4; eye.add(wht);
+    eye.add(mesh(new T.TorusGeometry(0.085, 0.014, 10, 40), M(0x3A2416, 0.4)));
+    var pu = glossyEye(0.05); pu.position.z = 0.016; eye.add(pu);
+    g.add(place(eye, ep.pos, ep.n, 0.012));
+    var ep2 = lathePoint(prof, -2.34, 0.58); g.add(place(eye.clone(), ep2.pos, ep2.n, 0.012));
+    var bp = lathePoint(prof, -1.57, 0.56), bdir = bp.n.clone().add(V(-0.3, -0.05, 0)).normalize();
+    var beak = mesh(new T.ConeGeometry(0.05, 0.34, 20), M(0x5E3A20, 0.4));
+    beak.quaternion.setFromUnitVectors(V(0, 1, 0), bdir); beak.position.copy(bp.pos).addScaledVector(bdir, 0.15); g.add(beak);
     // burbuja de agua (ventana) en el pecho
-    var wp = lathePoint(prof, -0.45, 0.38), bub = new T.Group();
+    var wp = lathePoint(prof, -0.45, 0.36), bub = new T.Group();
     var sph = mesh(new T.SphereGeometry(0.1, 32, 20), M(0xE9F6FF, 0.05, { transparent: true, opacity: 0.55, emissive: 0x9ED8FF, emissiveIntensity: 0.35 })); sph.scale.z = 0.55; bub.add(sph);
     var arc = mesh(new T.TorusGeometry(0.065, 0.008, 8, 30, Math.PI * 0.7), M(0xffffff, 0.1, { emissive: 0xffffff, emissiveIntensity: 0.7 })); arc.position.z = 0.05; arc.rotation.z = 2.2; bub.add(arc);
     g.add(place(bub, wp.pos, wp.n, 0.02));
@@ -408,8 +410,8 @@
     var wingC = canvas2d(256, 256), wx = wingC.getContext('2d'); wx.fillStyle = '#8B5129'; wx.fillRect(0, 0, 256, 256);
     wx.fillStyle = '#7FB1E3'; wx.fillRect(0, 62, 256, 20); wx.fillStyle = '#F5F3EE'; wx.fillRect(0, 88, 256, 14);
     wx.strokeStyle = 'rgba(60,30,12,0.5)'; wx.lineWidth = 4; for (var f = 0; f < 5; f++) { wx.beginPath(); wx.moveTo(30 + f * 45, 150); wx.lineTo(50 + f * 45, 250); wx.stroke(); }
-    var wpp = lathePoint(prof, 0.72, 0.44), wing = mesh(new T.SphereGeometry(0.22, 32, 20), M(0xffffff, 0.35, { map: tex(wingC) }));
-    wing.scale.set(1, 0.68, 0.3); place(wing, wpp.pos, wpp.n, -0.012); wing.rotateZ(-0.3); g.add(wing);
+    var wpp = lathePoint(prof, 0.85, 0.42), wing = mesh(new T.SphereGeometry(0.22, 32, 20), M(0xffffff, 0.35, { map: tex(wingC) }));
+    wing.scale.set(1.3, 0.62, 0.28); place(wing, wpp.pos, wpp.n, -0.02); wing.rotateZ(-0.45); g.add(wing);
     // cola
     var tsh = new T.Shape(); tsh.moveTo(0, -0.06); tsh.quadraticCurveTo(0.2, -0.08, 0.3, -0.02); tsh.quadraticCurveTo(0.2, 0.06, 0, 0.06); tsh.lineTo(0, -0.06);
     var tail = mesh(new T.ExtrudeGeometry(tsh, { depth: 0.06, bevelEnabled: true, bevelThickness: 0.02, bevelSize: 0.02, bevelSegments: 3 }), M(0x8B5129, 0.35));
@@ -422,7 +424,68 @@
     return g;
   }
 
-  var BUILD = { ballena: ballena, aguara: aguara, hornero: hornero,
+
+  // ---------- maceta principal BotanIA (portada) ----------
+  function botania() {
+    var g = new T.Group(), green = 0x4FA06A;
+    var TW = 2048, TH = 1024, tc = canvas2d(TW, TH), tg = tc.getContext('2d');
+    tg.fillStyle = '#ffffff'; tg.fillRect(0, 0, TW, TH);
+    for (var y = 0; y < TH; y += 6) { tg.fillStyle = 'rgba(0,0,0,0.075)'; tg.fillRect(0, y, TW, 2); }
+    var bc = canvas2d(TW, TH), bg = bc.getContext('2d'); bg.fillStyle = '#808080'; bg.fillRect(0, 0, TW, TH);
+    for (var y2 = 0; y2 < TH; y2 += 6) { bg.fillStyle = '#ffffff'; bg.fillRect(0, y2 + 1, TW, 3); bg.fillStyle = '#3a3a3a'; bg.fillRect(0, y2 + 4, TW, 2); }
+    var potR = 7.2, cmX = TW / (TAU * potR), cmY = TH / 11.2;
+    var lc = canvas2d(TW, TH), L = lc.getContext('2d'); L.fillStyle = '#000'; L.fillRect(0, 0, TW, TH);
+    L.save(); L.setTransform(cmX, 0, 0, cmY, TW / 2, TH * 0.56); L.strokeStyle = '#fff'; L.lineCap = 'round'; L.lineWidth = 0.38;
+    L.beginPath(); L.moveTo(-1.9, -0.2); L.quadraticCurveTo(0, -1.75, 1.9, -0.2); L.stroke();
+    L.beginPath(); L.moveTo(-1.15, 0.55); L.quadraticCurveTo(0, -0.45, 1.15, 0.55); L.stroke();
+    L.fillStyle = '#fff'; L.beginPath(); L.ellipse(0, 1.35, 0.32, 0.32, 0, 0, TAU); L.fill(); L.restore();
+    L.save(); L.setTransform(1, 0, 0, cmY / cmX, TW / 2, TH * 0.56 + 2.7 * cmY); L.fillStyle = '#fff'; L.font = '800 56px Outfit, "DM Sans", Arial, sans-serif'; L.textAlign = 'center'; L.textBaseline = 'middle'; L.fillText('BotanIA', 0, 0); L.restore();
+    var bump = new T.CanvasTexture(bc); bump.anisotropy = 8;
+    var potMat = new T.MeshStandardMaterial({ color: green, map: tex(tc), bumpMap: bump, bumpScale: 0.6, roughness: 0.62, metalness: 0, emissive: 0xffffff, emissiveMap: tex(lc), emissiveIntensity: 0.9 });
+    var plain = M(green, 0.62, { side: T.DoubleSide });
+    // cuerpo
+    var pts = []; for (var i = 0; i <= 60; i++) { var yy = 5 + 11.2 * i / 60; pts.push(new T.Vector2(6.5 + 1.5 * Math.pow(i / 60, 1.1), yy)); }
+    g.add(mesh(new T.LatheGeometry(pts, 128, Math.PI, TAU), potMat));
+    var rim = [[8.0, 16.2], [8.45, 16.25], [8.55, 16.6], [8.45, 17.0], [7.8, 17.05], [7.6, 16.8]].map(function (p) { return new T.Vector2(p[0], p[1]); });
+    g.add(mesh(new T.LatheGeometry(rim, 128), plain));
+    g.add(mesh(new T.LatheGeometry([new T.Vector2(6.0, 5.6), new T.Vector2(7.6, 16.8)], 96), plain));
+    var so = soil(7.45, 7.45, 15.3); g.add(so);
+    // sensor de humedad asomando
+    var sensor = mesh(new T.BoxGeometry(1.5, 1.7, 0.18), M(0x17201b, 0.5)); sensor.position.set(3.3, 16.1, 3.0); sensor.rotation.y = -0.7; g.add(sensor);
+    var sled = mesh(new T.SphereGeometry(0.12, 10, 8), M(0x5CC3F0, 0.3, { emissive: 0x5CC3F0, emissiveIntensity: 1.5 })); sled.position.set(3.6, 16.6, 3.3); g.add(sled);
+    // collar verde (módulo de electrónica) y depósito transparente
+    var collar = mesh(new T.CylinderGeometry(6.6, 6.6, 1.0, 64), M(green, 0.55)); collar.position.y = 4.5; g.add(collar);
+    var ring1 = mesh(new T.TorusGeometry(6.6, 0.22, 10, 64), M(green, 0.55)); ring1.rotation.x = Math.PI / 2; ring1.position.y = 4.0; g.add(ring1);
+    var shell = mesh(new T.CylinderGeometry(6.5, 6.1, 4, 64, 1, true), new T.MeshStandardMaterial({ color: 0xDDF0F8, roughness: 0.15, transparent: true, opacity: 0.38, depthWrite: false, side: T.DoubleSide }));
+    shell.position.y = 2; shell.renderOrder = 3; g.add(shell);
+    var base = mesh(new T.CylinderGeometry(6.15, 6.15, 0.3, 64), M(green, 0.6)); base.position.y = 0.15; g.add(base);
+    var bot = mesh(new T.TorusGeometry(6.15, 0.22, 10, 64), M(green, 0.6)); bot.rotation.x = Math.PI / 2; bot.position.y = 0.3; g.add(bot);
+    var water = mesh(new T.CylinderGeometry(5.95, 5.95, 2.6, 64), new T.MeshStandardMaterial({ color: 0x3AA6DD, roughness: 0.1, transparent: true, opacity: 0.6, depthWrite: false }));
+    water.position.y = 1.6; water.renderOrder = 2; g.add(water);
+    var pump = mesh(new T.CylinderGeometry(0.85, 0.85, 3.0, 24), M(0x2a2f2c, 0.45)); pump.position.set(-3, 1.9, -1); g.add(pump);
+    var spout = new T.Group(); spout.position.set(4.9, 3.0, 4.0); spout.rotation.y = Math.atan2(4.9, 4.0); g.add(spout);
+    var sp = mesh(new T.CylinderGeometry(0.75, 0.75, 1.4, 24), M(green, 0.6)); sp.rotation.x = Math.PI / 2 - 0.5; sp.position.z = 0.5; spout.add(sp);
+    var cap = mesh(new T.CylinderGeometry(0.85, 0.85, 0.35, 24), M(0x3AA6DD, 0.4)); cap.rotation.x = Math.PI / 2 - 0.5; cap.position.set(0, 0.42, 1.2); spout.add(cap);
+    // monstera
+    var s = new T.Shape(); s.moveTo(0, 0);
+    s.bezierCurveTo(-30, 10, -42, 48, -26, 72); s.bezierCurveTo(-14, 90, 14, 90, 26, 72); s.bezierCurveTo(42, 48, 30, 10, 0, 0);
+    [[-20, 34, 7, 2.6, 0.5], [20, 34, 7, 2.6, -0.5], [-19, 55, 6, 2.4, 0.25], [19, 55, 6, 2.4, -0.25], [-12, 72, 4.5, 2, 0.1], [12, 72, 4.5, 2, -0.1]].forEach(function (h) { var pth = new T.Path(); pth.absellipse(h[0], h[1], h[2], h[3], 0, TAU, true, h[4]); s.holes.push(pth); });
+    var LG = new T.ShapeGeometry(s, 24), lp = LG.attributes.position;
+    for (var j = 0; j < lp.count; j++) { var x = lp.getX(j) * 0.11, y3 = lp.getY(j) * 0.11; lp.setXYZ(j, x, y3, -0.07 * x * x - 0.028 * y3 * y3); }
+    LG.computeVertexNormals();
+    var cols = [0x1E8A4C, 0x2E9E57, 0x258F4F, 0x3FAE5E, 0x4FB548, 0x5FBF55], stemMat = M(0x3D8A45, 0.7);
+    [[0.3, 4.0, 24.5, 0.45, 1.0], [2.3, 3.8, 23, 0.35, 0.95], [4.1, 3.6, 26.5, 0.55, 0.92], [5.4, 3.0, 22, 0.28, 0.85], [1.2, 2.2, 29, 0.85, 0.78], [3.2, 1.6, 30, 0.95, 0.62]].forEach(function (l, i) {
+      var dir = V(-Math.sin(l[0]), 0, -Math.cos(l[0])), end = V(dir.x * l[1], l[2], dir.z * l[1]);
+      var curve = new T.CatmullRomCurve3([V(dir.x * 0.3, 15.5, dir.z * 0.3), V(dir.x * l[1] * 0.25, (15.5 + l[2]) / 2 + 1.5, dir.z * l[1] * 0.25), end]);
+      g.add(mesh(new T.TubeGeometry(curve, 24, 0.16, 8, false), stemMat));
+      var grp = new T.Group(); grp.position.copy(end); grp.rotation.y = l[0];
+      var lm = mesh(LG, M(cols[i], 0.5, { side: T.DoubleSide })); lm.rotation.x = -Math.PI / 2 + l[3]; lm.scale.setScalar(l[4]); grp.add(lm); g.add(grp);
+    });
+    var wrap = new T.Group(); wrap.add(g); wrap.scale.setScalar(1 / 16);
+    return wrap;
+  }
+
+  var BUILD = { botania: botania, ballena: ballena, aguara: aguara, hornero: hornero,
     condor: function () { return interior('condor'); }, yaguarete: function () { return interior('yaguarete'); }, armadillo: function () { return interior('armadillo'); } };
 
   // ---------- escena por tarjeta ----------
@@ -458,11 +521,11 @@
     var bb = new T.Box3().setFromObject(model), size = bb.getSize(V()), center = bb.getCenter(V());
     model.position.x -= center.x; model.position.z -= center.z; model.position.y -= bb.min.y;
     var sh = mesh(new T.PlaneGeometry(1, 1), new T.MeshBasicMaterial({ map: shadowTexture(), transparent: true, depthWrite: false }));
-    sh.rotation.x = -Math.PI / 2; sh.position.y = 0.002; sh.scale.set(Math.max(size.x, size.z) * 1.5, Math.max(size.x, size.z) * 1.1, 1); scene.add(sh);
+    sh.rotation.x = -Math.PI / 2; sh.position.y = 0.002; var shs = kind === 'botania' ? 0.95 : 1.2; sh.scale.set(Math.max(size.x, size.z) * shs, Math.max(size.x, size.z) * shs * 0.75, 1); scene.add(sh);
     var camera = new T.PerspectiveCamera(30, 1, 0.1, 50);
     var target = V(0, size.y * 0.48, 0);
     box.appendChild(canvas); box.classList.add('is3d');
-    var hint = document.createElement('span'); hint.className = 'hint3d'; hint.textContent = '3D · arrastrá para girar'; box.appendChild(hint);
+    var hint = document.createElement('span'); hint.className = 'hint3d'; hint.textContent = '3D · arrastrá para girar'; if (kind !== 'botania') box.appendChild(hint);
 
     var w = 0, h = 0;
     function resize() {
@@ -474,7 +537,7 @@
     }
     resize();
 
-    var rotY = kind === 'ballena' || kind === 'hornero' ? 0.6 : -0.3, vel = 0, dragging = false, lastX = 0, idleUntil = 0, visible = false, last = performance.now();
+    var rotY = kind === 'botania' ? 0 : kind === 'ballena' || kind === 'hornero' ? 0.6 : -0.3, vel = 0, dragging = false, lastX = 0, idleUntil = 0, visible = false, last = performance.now();
     canvas.addEventListener('pointerdown', function (e) { dragging = true; lastX = e.clientX; vel = 0; canvas.setPointerCapture(e.pointerId); canvas.style.cursor = 'grabbing'; });
     canvas.addEventListener('pointermove', function (e) { if (!dragging) return; var dx = e.clientX - lastX; lastX = e.clientX; rotY += dx * 0.012; vel = dx * 0.012; idleUntil = performance.now() + 2500; hint.style.opacity = '0'; });
     function up() { dragging = false; canvas.style.cursor = 'grab'; }
@@ -486,7 +549,7 @@
       if (!visible) return;
       var dt = Math.min((now - last) / 1000, 0.05); last = now;
       if (!dragging) {
-        if (now > idleUntil && !reduce) rotY += dt * 0.55;
+        if (now > idleUntil && !reduce) rotY += dt * (kind === 'botania' ? 0.35 : 0.55);
         rotY += vel; vel *= 0.92;
       }
       pivot.rotation.y = rotY;
@@ -497,7 +560,7 @@
 
   function start() {
     T = window.THREE;
-    var boxes = document.querySelectorAll('.pot-img[data-model]');
+    var boxes = document.querySelectorAll('[data-model]');
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) { var v = en.target.__viewer; if (v) v.setVisible(en.isIntersecting); });
     }, { rootMargin: '100px' });
@@ -515,14 +578,17 @@
   window.__pots3d = { build: function (k) { T = window.THREE; return BUILD[k](); }, shadow: function(){ return shadowTexture(); } };
   if (window.__pots3dDebug) return;
   // carga perezosa: three.js se baja recién cuando la sección de líneas está cerca
-  var section = document.getElementById('lineas');
-  if (!section || !hasWebGL() || !('IntersectionObserver' in window)) return;
+  if (!document.querySelector('[data-model]') || !hasWebGL() || !('IntersectionObserver' in window)) return;
   var loaded = false;
-  var pre = new IntersectionObserver(function (en) {
-    if (loaded || !en.some(function (e) { return e.isIntersecting; })) return;
-    loaded = true; pre.disconnect();
+  function load() {
+    if (loaded) return; loaded = true;
     if (window.THREE) return start();
-    var s = document.createElement('script'); s.src = 'three.min.js'; s.onload = start; document.head.appendChild(s);
-  }, { rootMargin: '600px' });
-  pre.observe(section);
+    var sc = document.createElement('script'); sc.src = 'three.min.js'; sc.onload = start; document.head.appendChild(sc);
+  }
+  // la portada tiene modelo: cargamos three.js apenas termina de cargar la página
+  if (document.querySelector('#inicio [data-model]')) { if (document.readyState === 'complete') load(); else window.addEventListener('load', load); }
+  else {
+    var pre = new IntersectionObserver(function (en) { if (en.some(function (e) { return e.isIntersecting; })) { pre.disconnect(); load(); } }, { rootMargin: '600px' });
+    document.querySelectorAll('[data-model]').forEach(function (el) { pre.observe(el); });
+  }
 })();

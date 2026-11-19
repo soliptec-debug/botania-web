@@ -47,3 +47,6 @@ details[open] summary::after{content:"–"}
 .pot-img canvas{position:absolute;inset:0;width:100%;height:100%;cursor:grab;touch-action:pan-y;display:block}
 .pot-img.is3d img{visibility:hidden}
 .hint3d{position:absolute;left:12px;top:12px;background:rgba(255,255,255,.85);color:#10241A;font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px;transition:opacity .4s;pointer-events:none}
+.hero-3d{position:relative;width:100%;max-width:420px}
+[data-model] canvas{position:absolute;inset:0;width:100%;height:100%;cursor:grab;touch-action:pan-y;display:block}
+.hero-3d.is3d img{visibility:hidden}
